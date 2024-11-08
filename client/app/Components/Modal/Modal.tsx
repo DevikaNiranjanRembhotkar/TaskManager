@@ -1,9 +1,15 @@
 "use client";
 import { useTasks } from "@/context/taskContext";
 import useDetectOutside from "@/hooks/useDetectOutside";
-import { useUploadThing } from "@/lib/uploadthing";
-import React, { useEffect, useState } from "react";
+// import { useUploadThing } from "@/lib/uploadthing";
+import React, { useCallback, useEffect, useState } from "react";
 import { FileUploader } from "../fileloader/FileLoader";
+import { useUploadThing } from "@/lib/uploadthing";
+import { useDropzone } from "@uploadthing/react";
+import {
+  generateClientDropzoneAccept,
+  generatePermittedFileTypes,
+} from "uploadthing/client";
 
 function Modal() {
   const {
@@ -18,8 +24,32 @@ function Modal() {
   } = useTasks();
   const ref = React.useRef(null);
   const [files, setFiles] = useState<File[]>([]);
-  const { startUpload } = useUploadThing("fileUploader");
-  
+
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    setFiles(acceptedFiles);
+  }, []);
+
+  const { startUpload, routeConfig } = useUploadThing("fileUploader");
+  // const { startUpload, routeConfig } = useUploadThing("fileUploader", {
+  //   onClientUploadComplete: () => {
+  //     alert("uploaded successfully!");
+  //   },
+  //   onUploadError: () => {
+  //     alert("error occurred while uploading");
+  //   },
+  //   onUploadBegin: ({ file }) => {
+  //     console.log("upload has begun for", file);
+  //   },
+  // });
+
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    accept: generateClientDropzoneAccept(
+      generatePermittedFileTypes(routeConfig).fileTypes
+    ),
+  });
+  // const { startUpload } = useUploadThing("fileUploader");
+
   // Use the hook to detect clicks outside the modal
   useDetectOutside({
     ref,
@@ -37,29 +67,31 @@ function Modal() {
   }, [modalMode, activeTask]);
 
   const convertFileToUrl = (file: File) => URL.createObjectURL(file);
-  
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = event.target.files;
     if (selectedFiles) {
       // Convert FileList to an array and update the state
       setFiles((prevFiles) => [...prevFiles, ...Array.from(selectedFiles)]);
-      console.log(files)
+      console.log(files);
     }
   };
 
-  const handleSubmit =  async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (modalMode === "edit") {
-      // updateTask(task);
+      updateTask(task);
     } else if (modalMode === "add") {
-      if (files.length > 0){
-        console.log(files)
+      if (files.length > 0) {
+        // console.log(files)
         const uploadedFiles = await startUpload(files);
         if (!uploadedFiles) {
           return;
         }
-        task.fileupload = uploadedFiles[0].url;
+        task.fileUrl = uploadedFiles[0].url;
+        task.fileName = uploadedFiles[0].name;
       }
+      console.log(task);
       createTask(task);
     }
     closeModal();
@@ -136,18 +168,32 @@ function Modal() {
             </div>
           </div>
         </div>
-        <div className="flex flex-col gap-1">
-          <label htmlFor="fileupload">Upload Documents</label>
-          <input
-            className="bg-[#F9F9F9] p-2 rounded-md border"
-            type="file"
-            value={task.fileUrl}
-            name="fileupload"
-            onChange={handleFileChange}
-          />
-          {/* <FileUploader imageUrl={task.fileUrl} setFiles={setFiles} onFieldChange={()=>} */}
-          
+
+        {modalMode === "add" && (
+          <div {...getRootProps()}>
+            <input {...getInputProps()} />
+            <div>
+              {files.length > 0 && (
+                <button onClick={() => startUpload(files)}>
+                  Upload {files.length} files
+                </button>
+              )}
+            </div>
+            Drop files here!
           </div>
+        )}
+
+        {modalMode === "edit" && (
+          <a
+            href={task.fileUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-3 text-blue-500"
+          >
+            {task.fileName}
+          </a>
+        )}
+
         <div className="mt-8">
           <button
             type="submit"

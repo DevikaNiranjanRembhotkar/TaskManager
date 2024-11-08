@@ -40,6 +40,13 @@ const TaskSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+
+    fileUrl: {
+      type: String,
+    },
+    fileName: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

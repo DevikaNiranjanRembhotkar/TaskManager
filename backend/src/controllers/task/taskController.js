@@ -3,16 +3,17 @@ import TaskModel from "../../models/tasks/TaskModel.js";
 
 export const createTask = asyncHandler(async (req, res) => {
   try {
-    const { title, description, dueDate, priority, status } = req.body;
-
+    const { title, description, dueDate, priority, status, fileUrl, fileName } =
+      req.body;
+ 
     if (!title || title.trim() === "") {
       res.status(400).json({ message: "Title is required!" });
     }
-
+ 
     if (!description || description.trim() === "") {
       res.status(400).json({ message: "Description is required!" });
     }
-
+ 
     const task = new TaskModel({
       title,
       description,
@@ -20,10 +21,12 @@ export const createTask = asyncHandler(async (req, res) => {
       priority,
       status,
       user: req.user._id,
+      fileUrl,
+      fileName,
     });
-
+ 
     await task.save();
-
+ 
     res.status(201).json(task);
   } catch (error) {
     console.log("Error in createTask: ", error.message);
