@@ -48,6 +48,8 @@ function Modal() {
       generatePermittedFileTypes(routeConfig).fileTypes
     ),
   });
+
+  
   // const { startUpload } = useUploadThing("fileUploader");
 
   // Use the hook to detect clicks outside the modal
@@ -147,7 +149,7 @@ function Modal() {
             className="bg-[#F9F9F9] p-2 rounded-md border"
             type="date"
             name="dueDate"
-            value={task.dueDate}
+            value={task.dueDate ? task.dueDate.split("T")[0] : ""}
             onChange={(e) => handleInput("dueDate")(e)}
           />
         </div>
@@ -194,7 +196,7 @@ function Modal() {
           </a>
         )}
 
-        <div className="mt-8">
+<div className="mt-8 flex gap-3">
           <button
             type="submit"
             className={`text-white py-2 rounded-md w-full hover:bg-[#7263F3] transition duration-200 ease-in-out ${
@@ -202,6 +204,15 @@ function Modal() {
             }`}
           >
             {modalMode === "edit" ? "Update Task" : "Create Task"}
+          </button>
+
+          <button
+            className={`text-white py-2 rounded-md w-full hover:bg-[#7263F3] transition duration-200 ease-in-out ${
+              modalMode === "edit" ? "bg-[#0064b1]" : "bg-[#0064b1]"
+            }`}
+            onClick={closeModal}
+          >
+            Close
           </button>
         </div>
       </form>

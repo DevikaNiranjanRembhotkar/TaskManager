@@ -58,14 +58,14 @@ function ProfileModal() {
               </span>
             </div>
           </div>
-          <div className="self-end flex items-center gap-2">
+          {/* <div className="self-end flex items-center gap-2">
             <button className="flex items-center gap-2 border-2 border-[#323232]/10 rounded-md py-1 px-3 text-xs font-medium text-[#323232]">
               {github} Github
             </button>
             <button className="flex items-center gap-2 border-2 border-[#323232]/10 rounded-md py-1 px-3 text-xs font-medium text-[#323232]">
               {check} Verified
             </button>
-          </div>
+          </div> */}
         </div>
         <div>
           <h1 className="text-lg font-bold">{name}</h1>
@@ -117,18 +117,30 @@ function ProfileModal() {
           </div>
 
           <div className="pt-2 grid grid-cols-[150px_1fr]">
-            <label htmlFor="name" className="text-sm font-medium">
-              Role
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              defaultValue={name}
-              onChange={(e) => handlerUserInput("name")(e)}
-              className="py-[0.4rem] px-3 font-medium rounded-lg border-2 border-[#323232]/10"
-            />
-          </div>
+            <label htmlFor="name" className="text-sm font-medium">Role</label>
+            <select
+              id="role"
+              name="role"
+              onChange={(e) => handlerUserInput("role")(e)}
+              >
+              <option value="user">User</option>
+              <option value="admin">Admin</option>
+              <option value="creator">Creator</option>
+            </select>
+          </div> 
+           {/* <div className="flex flex-col gap-1">
+          <label htmlFor="role">Select Role</label>
+          <select
+            className="bg-[#F9F9F9] p-2 rounded-md border cursor-pointer"
+            name="role"
+            value={role}
+            onChange={(e) => handleUserInput("role")(e)}
+          >
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+            <option value="creator">Creator</option>
+          </select>
+        </div> */}
 
           <div className="pt-4 grid grid-cols-2 gap-4 border-t-2 border-t-[#323232]/10">
             <div className="flex flex-col gap-1">
@@ -160,25 +172,34 @@ function ProfileModal() {
           <div className="flex justify-end">
             <button
               type="button"
-              className="py-3 px-4 bg-blue-500 text-white text-sm font-medium rounded-md
-                hover:bg-blue-400 transition-all duration-300"
+              className="py-3 px-4 bg-[#0064b1] text-white text-sm font-medium rounded-md
+                hover:bg-[#7263F3] transition-all duration-300"
               onClick={() => changePassword(oldPassword, newPassword)}
             >
               Change Password
             </button>
           </div>
 
-          <div className="flex justify-end gap-4 border-t-2 border-t-[#323232]/10">
+          {/* <div className="flex justify-end gap-4 border-t-2 border-t-[#323232]/10">
             <button
               className="mt-3 py-2 px-4 bg-transparent text-black text-sm font-medium rounded-md border-2 border-[#323232]/10
                 hover:bg-[#EB4E31] hover:border-transparent hover:text-white transition-all duration-300"
             >
               Cancel
-            </button>
+            </button> */}
+            <div >
+            <button 
+            type="submit"
+            className="py-3 px-4 bg-[#0064b1] text-white text-sm font-medium rounded-md
+                hover:bg-[#7263F3] transition-all duration-300"
+            onClick={closeModal}
+          >
+            Cancel
+          </button>
             <button
               type="submit"
-              className="mt-3 py-2 px-4 bg-[#3aafae] text-white text-sm font-medium rounded-md
-                hover:bg-[#2e8d8c]/90 transition-all duration-300"
+              className="py-3 px-4 bg-[#0064b1] text-white text-sm font-medium rounded-md
+                hover:bg-[#7263F3] transition-all duration-300"
             >
               Save Changes
             </button>

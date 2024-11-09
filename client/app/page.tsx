@@ -8,6 +8,8 @@ import { filteredTasks } from "@/utils/utilities";
 import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { container, item } from "@/utils/animations";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Home() {
   useRedirect("/login");
@@ -20,8 +22,29 @@ export default function Home() {
     setPriority("all");
   }, []);
 
+  useEffect(() => {
+    // Trigger a toast notification for each task with overdue info if applicable
+    tasks.forEach((task: Task) => {
+      const dueDate = new Date(task.dueDate);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // Set to midnight to only compare dates
+
+      // Check if task is overdue
+      if (!task.completed && dueDate < today) {
+        const overdueDays = Math.floor(
+          (today.getTime() - dueDate.getTime()) / (1000 * 60 * 60 * 24)
+        );
+        toast(`${task.title} is overdue by ${overdueDays} day(s)`, {
+          position: "bottom-right",
+        });
+      }
+    });
+  }, []);
+
+  // alert("Wow so easy!");
   return (
     <main className="m-6 h-full">
+      <ToastContainer />
       <div className="flex justify-between">
         <h1 className="text-2xl font-bold">All Tasks</h1>
         <Filters />
@@ -33,6 +56,7 @@ export default function Home() {
         initial="hidden"
         animate="visible"
       >
+        
         {filtered.map((task: Task, i: number) => (
           <TaskItem key={i} task={task} />
         ))}
