@@ -4,7 +4,8 @@ import React, { useRef } from "react";
 import RadialChart from '../Components/RadialChart/RadialChart'
 import { useUserContext } from '@/context/userContext';
 import { useTasks } from '@/context/taskContext';
-import html2pdf from "html2pdf.js";
+// @ts-ignore
+import html2pdf from 'html2pdf.js';
 
 const page = () => {
 
