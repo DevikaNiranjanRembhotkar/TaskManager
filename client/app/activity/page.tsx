@@ -1,7 +1,7 @@
 "use client"
 //import React from 'react'
 import React, { useRef } from "react";
-import RadialChart from '../Components/RadialChart/RadialChart'
+// import RadialChart from '../Components/RadialChart/RadialChart'
 import { useUserContext } from '@/context/userContext';
 import { useTasks } from '@/context/taskContext';
 // @ts-ignore
@@ -84,7 +84,7 @@ const page = () => {
             </p>
           </div>
         </div>
-        <RadialChart />
+        {/* <RadialChart /> */}
       </div>
       
       <button className="px-8 py-3 bg-[#0064b1] hover:bg-[#7263F3] text-white rounded-[50px]
