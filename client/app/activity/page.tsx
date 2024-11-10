@@ -1,51 +1,65 @@
 "use client"
-//import React from 'react'
-import React, { useRef } from "react";
-// import RadialChart from '../Components/RadialChart/RadialChart'
+import React, { useRef, useState } from "react";
+import RadialChart from '../Components/RadialChart/RadialChart'
 import { useUserContext } from '@/context/userContext';
 import { useTasks } from '@/context/taskContext';
-// @ts-ignore
-import html2pdf from 'html2pdf.js';
 
-const page = () => {
+// Define the options type inline
+interface Html2PdfOptions {
+  margin?: number;
+  filename?: string;
+  image?: {
+    type?: string;
+    quality?: number;
+  };
+  html2canvas?: {
+    scale?: number;
+    [key: string]: any;
+  };
+  jsPDF?: {
+    unit?: string;
+    format?: string;
+    orientation?: 'portrait' | 'landscape';
+    [key: string]: any;
+  };
+}
 
+const Page = () => {
   const { user } = useUserContext();
-  const { tasks, activeTasks, completedTasks, openProfileModal } = useTasks();
+  const { tasks, activeTasks, completedTasks } = useTasks();
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [isExporting, setIsExporting] = useState(false);
 
-  const contentRef = useRef(null);
+  const convertToPdf = async () => {
+    try {
+      setIsExporting(true);
+      // Dynamically import html2pdf only on client side
+      const html2pdf = (await import('html2pdf.js')).default;
+      
+      const content = contentRef.current;
+      const options: Html2PdfOptions = {
+        filename: `${user?.name || "tasks"}-report.pdf`,
+        margin: 1,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: {
+          unit: 'in',
+          format: 'letter',
+          orientation: 'portrait',
+        },
+      };
 
-	const convertToPdf = () => {
-		const content = contentRef.current;
-
-		const options = {
-			filename: 'my-document.pdf',
-			margin: 1,
-			image: { type: 'jpeg', quality: 0.98 },
-			html2canvas: { scale: 2 },
-			jsPDF: {
-				unit: 'in',
-				format: 'letter',
-				orientation: 'portrait',
-			},
-		};
-
-		html2pdf().set(options).from(content).save();
-	};
-
-  // Function to export content as PDF
-  // const exportToPDF = () => {
-  //   const element = contentRef.current;
-  //   html2pdf()
-  //     .set({ filename: `${user?.name || "tasks"}-report.pdf` })
-  //     .from(element)
-  //     .save();
+      await html2pdf().set(options).from(content).save();
+    } catch (error) {
+      console.error('Failed to generate PDF:', error);
+    } finally {
+      setIsExporting(false);
+    }
+  };
 
   return (
-    // <div className="w-[20rem] mt-[5rem] h-[calc(100%-5rem)] fixed right-0 top-0 bg-[#f9f9f9] flex flex-col">
-    //   <div className="mt-4 mx-6">
     <div className="flex flex-col items-center gap-5 w-full">
-
-    <div className="mt-6 flex flex-col gap-8 w-full" ref={contentRef}>
+      <div className="mt-6 flex flex-col gap-8 w-full" ref={contentRef}>
         <div className="grid grid-cols-2 gap-4">
           <div className="text-gray-400">
             <p>Total Tasks:</p>
@@ -84,17 +98,19 @@ const page = () => {
             </p>
           </div>
         </div>
-        {/* <RadialChart /> */}
+        <RadialChart />
       </div>
       
-      <button className="px-8 py-3 bg-[#0064b1] hover:bg-[#7263F3] text-white rounded-[50px]
-          hover:text-white transition-all duration-200 ease-in-out" onClick={convertToPdf}>Export to PDF</button>
-
-
+      <button 
+        className="px-8 py-3 bg-[#0064b1] hover:bg-[#7263F3] text-white rounded-[50px]
+          hover:text-white transition-all duration-200 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
+        onClick={convertToPdf}
+        disabled={isExporting}
+      >
+        {isExporting ? 'Generating PDF...' : 'Export to PDF'}
+      </button>
     </div>
+  );
+};
 
-  )
-}
-
-
-export default page
+export default Page;
