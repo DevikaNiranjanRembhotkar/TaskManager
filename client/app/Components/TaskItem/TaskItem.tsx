@@ -1,16 +1,19 @@
 import { useTasks } from "@/context/taskContext";
-import { clone, edit, star, trash } from "@/utils/Icons";
+import { edit, star, trash } from "@/utils/Icons";
 import { Task } from "@/utils/types";
 import { formatTime } from "@/utils/utilities";
 import React from "react";
 import { motion } from "framer-motion";
 import { item } from "@/utils/animations";
-
+import { useDraggable } from "@dnd-kit/core";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 interface TaskItemProps {
+  id: number;
   task: Task;
 }
 
-function TaskItem({ task }: TaskItemProps) {
+function TaskItem({ id, task }: TaskItemProps) {
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case "low":
@@ -24,10 +27,21 @@ function TaskItem({ task }: TaskItemProps) {
     }
   };
 
-  const { getTask, openModalForEdit, openModalForClone, deleteTask, modalMode } = useTasks();
+  const { getTask, openModalForEdit, deleteTask, modalMode } = useTasks();
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id });
+
+  const style = {
+    transition,
+    transform: CSS.Transform.toString(transform),
+  };
 
   return (
     <motion.div
+      ref={setNodeRef}
+      {...attributes}
+      {...listeners}
+      style={style}
       className="h-[16rem] px-4 py-3 flex flex-col gap-4 shadow-sm bg-[#f9f9f9] rounded-lg border-2 border-white"
       variants={item}
     >
@@ -65,15 +79,6 @@ function TaskItem({ task }: TaskItemProps) {
               }}
             >
               {trash}
-            </button>
-            <button
-              className="text-[#F65314]"
-              onClick={() => {
-                getTask(task._id);
-                openModalForClone(task);
-              }}
-            >
-              {clone}
             </button>
           </div>
         </div>
