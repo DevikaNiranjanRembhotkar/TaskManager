@@ -20,10 +20,24 @@ const app = express();
 // middleware
 app.use(
   cors({
-    origin: "*",
+    origin: function(origin, callback) {
+      const allowedOrigins = [
+        'http://localhost:3000',
+        'https://taskmanager-psi-kohl.vercel.app'
+      ];
+      
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+      
+      if (allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, origin);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     methods: ["GET", "POST", "OPTIONS", "PUT", "DELETE", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
+    credentials: true
   })
 );
 app.use(express.json());
