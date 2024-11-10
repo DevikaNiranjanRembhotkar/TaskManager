@@ -7,7 +7,7 @@ const UserContext = React.createContext();
 
 // set axios to include credentials with every request
 axios.defaults.withCredentials = true;
-  // const serverUrl = "http://localhost:8000";
+//const serverUrl = "http://localhost:8000";
 
 export const UserContextProvider = ({ children }) => {
   //const serverUrl = "http://localhost:8000";
