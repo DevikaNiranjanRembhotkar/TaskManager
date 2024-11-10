@@ -12,7 +12,7 @@ axios.defaults.withCredentials = true;
 export const UserContextProvider = ({ children }) => {
   // const serverUrl = "http://localhost:8000";
   const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL
-
+  console.log(serverUrl)
   // console.log(serverUrl)
   const router = useRouter();
 
