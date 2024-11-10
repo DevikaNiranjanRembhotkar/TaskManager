@@ -4,7 +4,9 @@ import IconChart from "@/public/icons/IconChart";
 import IconDeleteAll from "@/public/icons/IconDeleteAll";
 import IconFileCheck from "@/public/icons/IconFileCheck";
 import IconGrid from "@/public/icons/IconGrid";
+import IconTaskBoard from "@/public/icons/IconTaskBoard"
 import IconStopwatch from "@/public/icons/IconStopwatch";
+//import IconTasks from "@/public/icons/IconTasks";
 import { link } from "fs";
 import Image from "next/image";
 import Link from "next/link";
@@ -20,8 +22,13 @@ function MiniSidebar() {
 
   const navItems = [
     {
-      icon: <IconGrid strokeColor={getStrokeColor("/")} />,
-      title: "All",
+      icon: <IconGrid strokeColor={getStrokeColor("/all-tasks")} />,
+      title: "All Tasks",
+      link: "/all-tasks",
+    },
+    {
+      icon: <IconTaskBoard strokeColor={getStrokeColor("/")} />,
+      title: "Task Board",
       link: "/",
     },
     {
@@ -65,11 +72,11 @@ function MiniSidebar() {
           ))}
         </ul>
 
-        <div className="mb-[1.5rem]">
+        {/* <div className="mb-[1.5rem]">
           <button className="w-12 h-12 flex justify-center items-center border-2 border-[#EB4E31]  p-2 rounded-full">
             <IconDeleteAll strokeColor="#EB4E31" />
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );
