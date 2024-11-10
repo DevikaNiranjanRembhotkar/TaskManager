@@ -10,7 +10,7 @@ axios.defaults.withCredentials = true;
   // const serverUrl = "http://localhost:8000";
 
 export const UserContextProvider = ({ children }) => {
-  // const serverUrl = "http://localhost:8000";
+  //const serverUrl = "http://localhost:8000";
   const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL
   // console.log(serverUrl)
   // console.log(serverUrl)
@@ -39,6 +39,7 @@ export const UserContextProvider = ({ children }) => {
     }
 
     try {
+      console.log(serverUrl)
       const res = await axios.post(`${serverUrl}/api/v1/register`, userState);
       console.log("User registered successfully", res.data);
       toast.success("User registered successfully");

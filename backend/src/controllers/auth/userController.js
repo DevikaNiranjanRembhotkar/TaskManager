@@ -9,7 +9,7 @@ import hashToken from "../../helpers/hashToken.js";
 import sendEmail from "../../helpers/sendEmail.js";
 
 export const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password, role } = req.body;
+  const { name, email, password } = req.body;
 
   //validation
   if (!name || !email || !password) {
@@ -37,7 +37,6 @@ export const registerUser = asyncHandler(async (req, res) => {
     name,
     email,
     password,
-    role
   });
 
   // generate token with user id

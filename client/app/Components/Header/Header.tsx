@@ -41,6 +41,7 @@ function Header() {
       </div>
       <div className="h-[50px] flex gap-2">
         <button
+          id="addtask"
           className="px-8 py-3 bg-[#0064b1] hover:bg-[#7263F3] text-white rounded-[50px]
           hover:text-white transition-all duration-200 ease-in-out"
           onClick={() => {

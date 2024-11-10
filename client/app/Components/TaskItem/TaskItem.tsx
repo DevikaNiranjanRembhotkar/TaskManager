@@ -1,5 +1,5 @@
 import { useTasks } from "@/context/taskContext";
-import { edit, star, trash } from "@/utils/Icons";
+import { edit, star, trash ,clone } from "@/utils/Icons";
 import { Task } from "@/utils/types";
 import { formatTime } from "@/utils/utilities";
 import React from "react";
@@ -27,7 +27,7 @@ function TaskItem({ id, task }: TaskItemProps) {
     }
   };
 
-  const { getTask, openModalForEdit, deleteTask, modalMode } = useTasks();
+  const { getTask, openModalForEdit, deleteTask, modalMode,openModalForClone } = useTasks();
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
 
@@ -65,12 +65,24 @@ function TaskItem({ id, task }: TaskItemProps) {
             </button>
             <button
               className="text-[#00A1F1]"
+              id={`edit-${task._id}`}
               onClick={() => {
                 getTask(task._id);
                 openModalForEdit(task);
               }}
             >
               {edit}
+            </button>
+
+            <button
+              className="text-[#F65314]"
+              id={`clone-${task._id}`}
+              onClick={() => {
+                getTask(task._id);
+                openModalForClone(task);
+              }}
+            >
+              {clone}
             </button>
             <button
               className="text-[#F65314]"

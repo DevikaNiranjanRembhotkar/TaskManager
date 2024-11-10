@@ -123,6 +123,7 @@ function Modal() {
           <label htmlFor="description">Description</label>
           <textarea
             className="bg-[#F9F9F9] p-2 rounded-md border resize-none"
+            id="desc"
             name="description"
             placeholder="Task Description"
             rows={4}
@@ -134,6 +135,7 @@ function Modal() {
           <label htmlFor="priority">Select Priority</label>
           <select
             className="bg-[#F9F9F9] p-2 rounded-md border cursor-pointer"
+            id="priority"
             name="priority"
             value={task.priority}
             onChange={(e) => handleInput("priority")(e)}
@@ -147,6 +149,7 @@ function Modal() {
           <label htmlFor="dueDate">Due Date</label>
           <input
             className="bg-[#F9F9F9] p-2 rounded-md border"
+            id="date"
             type="date"
             name="dueDate"
             value={task.dueDate ? task.dueDate.split("T")[0] : ""}
@@ -160,6 +163,7 @@ function Modal() {
             <div>
               <select
                 className="bg-[#f9f9f9] p-2 rounded-md border cursor-pointer"
+                id="completed"
                 name="completed"
                 value={task.completed ? "true" : "false"}
                 onChange={(e) => handleInput("completed")(e)}
@@ -176,7 +180,7 @@ function Modal() {
             <input {...getInputProps()} />
             <div>
               {files.length > 0 && (
-                <button onClick={() => startUpload(files)}>
+                <button id="fileUpload" onClick={() => startUpload(files)}>
                   Upload {files.length} files
                 </button>
               )}
@@ -199,6 +203,7 @@ function Modal() {
 <div className="mt-8 flex gap-3">
           <button
             type="submit"
+            id="create"
             className={`text-white py-2 rounded-md w-full hover:bg-[#7263F3] transition duration-200 ease-in-out ${
               modalMode === "edit" ? "bg-[#0064b1]" : "bg-[#0064b1]"
             }`}
