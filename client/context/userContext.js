@@ -7,10 +7,13 @@ const UserContext = React.createContext();
 
 // set axios to include credentials with every request
 axios.defaults.withCredentials = true;
+  // const serverUrl = "http://localhost:8000";
 
 export const UserContextProvider = ({ children }) => {
-  const serverUrl = "http://localhost:8000";
+  // const serverUrl = "http://localhost:8000";
+  const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL
 
+  // console.log(serverUrl)
   const router = useRouter();
 
   const [user, setUser] = useState({});
@@ -163,7 +166,7 @@ export const UserContextProvider = ({ children }) => {
         withCredentials: true, // send cookies to the server
       });
 
-      // console.log(res)
+      console.log(res)
       // update the user state
       setUser((prevState) => {
         return {

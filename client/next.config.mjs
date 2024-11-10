@@ -4,7 +4,7 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    domains: ["localhost", "avatars.githubusercontent.com"],
+    domains: ["localhost", "avatars.githubusercontent.com", "taskmanager-psi-kohl.vercel.app", "taskmanager-api-omega.vercel.app"],
   },
 };
 
