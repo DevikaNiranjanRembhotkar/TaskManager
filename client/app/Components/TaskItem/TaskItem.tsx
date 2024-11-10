@@ -1,5 +1,5 @@
 import { useTasks } from "@/context/taskContext";
-import { edit, star, trash } from "@/utils/Icons";
+import { clone, edit, star, trash } from "@/utils/Icons";
 import { Task } from "@/utils/types";
 import { formatTime } from "@/utils/utilities";
 import React from "react";
@@ -24,7 +24,7 @@ function TaskItem({ task }: TaskItemProps) {
     }
   };
 
-  const { getTask, openModalForEdit, deleteTask, modalMode } = useTasks();
+  const { getTask, openModalForEdit, openModalForClone, deleteTask, modalMode } = useTasks();
 
   return (
     <motion.div
@@ -65,6 +65,15 @@ function TaskItem({ task }: TaskItemProps) {
               }}
             >
               {trash}
+            </button>
+            <button
+              className="text-[#F65314]"
+              onClick={() => {
+                getTask(task._id);
+                openModalForClone(task);
+              }}
+            >
+              {clone}
             </button>
           </div>
         </div>

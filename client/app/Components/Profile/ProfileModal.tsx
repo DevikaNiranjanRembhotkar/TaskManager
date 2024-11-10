@@ -20,7 +20,7 @@ function ProfileModal() {
     },
   });
 
-  const { name, email, photo } = user;
+  const { name, email, photo, role } = user;
 
   //state
   const [oldPassword, setOldPassword] = React.useState("");
@@ -78,9 +78,11 @@ function ProfileModal() {
           onSubmit={(e) => {
             e.preventDefault();
             updateUser(e, {
-              name: userState.name,
-              email: userState.email,
+              name: userState.name ? userState.name : name,
+              email: userState.email ? userState.email : email,
+              role: userState.role ? userState.role: role,
             });
+            closeModal();
           }}
         >
           <div className="pt-2 grid grid-cols-[150px_1fr]">
@@ -121,11 +123,13 @@ function ProfileModal() {
             <select
               id="role"
               name="role"
+              defaultValue={role}
               onChange={(e) => handlerUserInput("role")(e)}
+              className="px-4 py-3 border-[2px] rounded-md outline-[#0064b1] text-gray-800"
               >
-              <option value="user">User</option>
-              <option value="admin">Admin</option>
-              <option value="creator">Creator</option>
+              <option value="user">user</option>
+              <option value="admin">admin</option>
+              <option value="creator">creator</option>
             </select>
           </div> 
            {/* <div className="flex flex-col gap-1">
@@ -169,8 +173,8 @@ function ProfileModal() {
               />
             </div>
           </div>
-          <div className="flex justify-end">
-            <button
+          <div className="w-full flex flex-col gap-2">
+          <button
               type="button"
               className="py-3 px-4 bg-[#0064b1] text-white text-sm font-medium rounded-md
                 hover:bg-[#7263F3] transition-all duration-300"
@@ -178,7 +182,7 @@ function ProfileModal() {
             >
               Change Password
             </button>
-          </div>
+          
 
           {/* <div className="flex justify-end gap-4 border-t-2 border-t-[#323232]/10">
             <button
@@ -187,9 +191,8 @@ function ProfileModal() {
             >
               Cancel
             </button> */}
-            <div >
             <button 
-            type="submit"
+            type="button"
             className="py-3 px-4 bg-[#0064b1] text-white text-sm font-medium rounded-md
                 hover:bg-[#7263F3] transition-all duration-300"
             onClick={closeModal}

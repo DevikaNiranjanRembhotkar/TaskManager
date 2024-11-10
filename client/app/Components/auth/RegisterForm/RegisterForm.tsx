@@ -76,7 +76,22 @@ function RegisterForm() {
             )}
           </button>
         </div>
-
+        <div className="relative mt-[1rem] flex flex-col">
+        <label htmlFor="password" className="mb-1 text-[#999]">
+          Role
+          </label>
+            <select
+              id="role"
+              name="role"
+              onChange={(e) => handlerUserInput("role")(e)}
+              className="px-4 py-3 border-[2px] rounded-md outline-[#0064b1] text-gray-800"
+              //placeholder="Select Role"
+              >
+              <option value="user">user</option>
+              <option value="admin">admin</option>
+              <option value="creator">creator</option>
+            </select>
+          </div> 
         <div className="flex">
           <button
             type="submit"

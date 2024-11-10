@@ -87,7 +87,7 @@ const page = () => {
       </div>
       
       <button className="px-8 py-3 bg-[#0064b1] hover:bg-[#7263F3] text-white rounded-[50px]
-          hover:text-white transition-all duration-200 ease-in-out" onClick={convertToPdf}>Convert to PDF</button>
+          hover:text-white transition-all duration-200 ease-in-out" onClick={convertToPdf}>Export to PDF</button>
 
 
     </div>

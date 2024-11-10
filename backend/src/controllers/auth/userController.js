@@ -9,7 +9,7 @@ import hashToken from "../../helpers/hashToken.js";
 import sendEmail from "../../helpers/sendEmail.js";
 
 export const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, role } = req.body;
 
   //validation
   if (!name || !email || !password) {
@@ -37,6 +37,7 @@ export const registerUser = asyncHandler(async (req, res) => {
     name,
     email,
     password,
+    role
   });
 
   // generate token with user id
@@ -159,11 +160,12 @@ export const updateUser = asyncHandler(async (req, res) => {
 
   if (user) {
     // user properties to update
-    const { name, bio, photo } = req.body;
+    const { name, bio, photo, role } = req.body;
     // update user properties
     user.name = req.body.name || user.name;
     user.bio = req.body.bio || user.bio;
     user.photo = req.body.photo || user.photo;
+    user.role = req.body.role || user.role;
 
     const updated = await user.save();
 

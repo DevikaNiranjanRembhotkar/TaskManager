@@ -19,6 +19,7 @@ export const UserContextProvider = ({ children }) => {
     name: "",
     email: "",
     password: "",
+    role:""
   });
   const [loading, setLoading] = useState(false);
 
@@ -156,12 +157,13 @@ export const UserContextProvider = ({ children }) => {
   const updateUser = async (e, data) => {
     e.preventDefault();
     setLoading(true);
-
+    // console.log(data)
     try {
       const res = await axios.patch(`${serverUrl}/api/v1/user`, data, {
         withCredentials: true, // send cookies to the server
       });
 
+      // console.log(res)
       // update the user state
       setUser((prevState) => {
         return {

@@ -26,6 +26,12 @@ export const TasksProvider = ({ children }) => {
     setTask({});
   };
 
+  const openModalForClone = (task) => {
+    setModalMode("add");
+    setIsEditing(true);
+    setTask(task);
+  };
+
   const openModalForEdit = (task) => {
     setModalMode("edit");
     setIsEditing(true);
@@ -155,6 +161,7 @@ export const TasksProvider = ({ children }) => {
         setIsEditing,
         openModalForAdd,
         openModalForEdit,
+        openModalForClone,
         activeTask,
         closeModal,
         modalMode,
